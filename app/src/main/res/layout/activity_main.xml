@@ -56,10 +56,23 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginTop="24dp">
 
                 <ImageView
-                    android:id="@+id/iv_now_weather"
+                    android:id="@+id/iv_now_weather_a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/d00" />
+                <View
+                    android:id="@+id/iv_now_weather_divider"
+                    android:layout_width="14dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="6dp"
+                    android:background="@android:color/white"/>
+                <ImageView
+                    android:id="@+id/iv_now_weather_b"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/d00" />
@@ -75,7 +88,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_today_temp"
+                android:id="@+id/tv_today_temprature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -146,7 +159,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:text="@string/forecast"
-                    android:textColor="@color/dark_grey" />
+                    android:textColor="@android:color/white" />
 
                 <View
                     android:layout_width="match_parent"
@@ -260,14 +273,10 @@
                         android:src="@drawable/d00" />
 
                     <TextView
-                        android:id="@+id/tv_today_temp_a"
+                        android:id="@+id/tv_today_temp"
                         style="@style/TextViewStyle"
-                        android:layout_weight="4" />
+                        android:layout_weight="3" />
 
-                    <TextView
-                        android:id="@+id/tv_today_temp_b"
-                        style="@style/TextViewStyle"
-                        android:layout_weight="4" />
                 </LinearLayout>
 
                 <View
@@ -294,14 +303,9 @@
                         android:src="@drawable/d00" />
 
                     <TextView
-                        android:id="@+id/tv_tommorrow_temp_a"
+                        android:id="@+id/tv_tommorrow_temp"
                         style="@style/TextViewStyle"
-                        android:layout_weight="4" />
-
-                    <TextView
-                        android:id="@+id/tv_tommorrow_temp_b"
-                        style="@style/TextViewStyle"
-                        android:layout_weight="4" />
+                        android:layout_weight="3" />
                 </LinearLayout>
 
                 <View
@@ -328,14 +332,10 @@
                         android:src="@drawable/d00" />
 
                     <TextView
-                        android:id="@+id/tv_thirdday_temp_a"
+                        android:id="@+id/tv_thirdday_temp"
                         style="@style/TextViewStyle"
-                        android:layout_weight="4" />
+                        android:layout_weight="3" />
 
-                    <TextView
-                        android:id="@+id/tv_thirdday_temp_b"
-                        style="@style/TextViewStyle"
-                        android:layout_weight="4" />
                 </LinearLayout>
 
                 <View
@@ -362,15 +362,101 @@
                         android:src="@drawable/d00" />
 
                     <TextView
-                        android:id="@+id/tv_fourthday_temp_a"
+                        android:id="@+id/tv_fourthday_temp"
                         style="@style/TextViewStyle"
-                        android:layout_weight="4" />
+                        android:layout_weight="3" />
+
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/light_grey" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
 
                     <TextView
-                        android:id="@+id/tv_fourthday_temp_b"
+                        android:id="@+id/tv_fifthday"
                         style="@style/TextViewStyle"
-                        android:layout_weight="4" />
+                        android:layout_weight="3"
+                        android:gravity="left"
+                        android:paddingLeft="16dp" />
+
+                    <ImageView
+                        android:id="@+id/iv_fifthday_weather"
+                        style="@style/ViewStyle"
+                        android:layout_weight="4"
+                        android:src="@drawable/d00" />
+
+                    <TextView
+                        android:id="@+id/tv_fifthday_temp"
+                        style="@style/TextViewStyle"
+                        android:layout_weight="3" />
+
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/light_grey" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tv_sixthday"
+                        style="@style/TextViewStyle"
+                        android:layout_weight="3"
+                        android:gravity="left"
+                        android:paddingLeft="16dp" />
+
+                    <ImageView
+                        android:id="@+id/iv_sixthday_weather"
+                        style="@style/ViewStyle"
+                        android:layout_weight="4"
+                        android:src="@drawable/d00" />
+
+                    <TextView
+                        android:id="@+id/tv_sixthday_temp"
+                        style="@style/TextViewStyle"
+                        android:layout_weight="3" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/light_grey" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/tv_seventhday"
+                        style="@style/TextViewStyle"
+                        android:layout_weight="3"
+                        android:gravity="left"
+                        android:paddingLeft="16dp" />
+
+                    <ImageView
+                        android:id="@+id/iv_seventhday_weather"
+                        style="@style/ViewStyle"
+                        android:layout_weight="4"
+                        android:src="@drawable/d00" />
+
+                    <TextView
+                        android:id="@+id/tv_seventhday_temp"
+                        style="@style/TextViewStyle"
+                        android:layout_weight="3" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -385,7 +471,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:text="@string/information"
-                    android:textColor="@color/dark_grey" />
+                    android:textColor="@android:color/white" />
 
                 <View
                     android:layout_width="match_parent"

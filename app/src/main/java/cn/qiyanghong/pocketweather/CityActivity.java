@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thinkland.sdk.android.DataCallBack;
 import com.thinkland.sdk.android.JuheData;
+import com.thinkland.sdk.android.Parameters;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,14 +33,17 @@ public class CityActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
+        getCitys();
     }
 
     void getCitys(){
+        Parameters params=new Parameters();
+        params.add("city","长沙");
         JuheData.executeWithAPI(getApplicationContext()
                 , 39
-                , "http://v.juhe.cn/weather/citys"
+                , "http://web.juhe.cn:8080/environment/air/pm"
                 , JuheData.GET
-                , null
+                , params
                 , new DataCallBack() {
                     @Override
                     public void onSuccess(int i, String s) {
