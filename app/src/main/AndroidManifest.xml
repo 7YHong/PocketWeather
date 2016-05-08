@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.thinkland.juheapi.openid"
-            android:value="JH220fa5e47444f599ce413ea82061213b" />
+            android:value="" />
 
         <activity android:name=".LaunchActivity">
             <intent-filter>

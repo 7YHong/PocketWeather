@@ -28,6 +28,9 @@ public class MainActivity extends Activity {
     BeautifulRefreshLayout refreshLayout;
     WeatherService weatherService;
 
+
+    String prefixStr = null;
+
     private TextView tv_city,// 城市
             tv_release,// 发布时间
             tv_now_weather,// 天气
@@ -58,9 +61,15 @@ public class MainActivity extends Activity {
             tv_sixthday_temp,// 第六天温度a
             tv_seventhday,       // 第七天
             tv_seventhday_temp,// 第七天温度a
-            tv_humidity,// 湿度
-            tv_wind, tv_uv_index,// 紫外线指数
-            tv_dressing_index;// 穿衣指数
+            tv_wind,        //风向风力
+            tv_dressing_index,// 穿衣指数
+            tv_dressing_advice,// 穿衣建议
+            tv_uv_index,// 紫外线指数
+            tv_comfort_index,// "",/*舒适度指数*/
+            tv_wash_index,// "较适宜",	/*洗车指数*/
+            tv_travel_index,// "适宜",	/*旅游指数*/
+            tv_exercise_index,// "较适宜",	/*晨练指数*/
+            tv_drying_index;// ""/*干燥指数*/
 
     private ImageView iv_now_weather_a;// 现在a
     private View iv_now_weather_divider;// 分隔线
@@ -74,9 +83,9 @@ public class MainActivity extends Activity {
             iv_tommorrow_weather,// 明天
             iv_thirdday_weather,// 第三天
             iv_fourthday_weather,// 第四天
-            iv_fifthday_weather,// 第四天
-            iv_sixthday_weather,// 第四天
-            iv_seventhday_weather;// 第四天
+            iv_fifthday_weather,
+            iv_sixthday_weather,
+            iv_seventhday_weather;
 
 
     private RelativeLayout rl_city;//页头，点击可选择城市
@@ -87,6 +96,8 @@ public class MainActivity extends Activity {
             weatherService = ((WeatherService.WeatherServiceBinder) service).getService();
             weatherService.registerCallback(weatherCallback);
             weatherService.getWeather();
+            weatherService.getForecast();
+            weatherService.getPM();
         }
 
         @Override
@@ -99,42 +110,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-//        testFun();
         Intent serviceIntent = new Intent(getApplicationContext(), WeatherService.class);
         bindService(serviceIntent, conn, BIND_AUTO_CREATE);
     }
 
-    private void testFun() {
-        Gson gson = new Gson();
-        String json = "{\n" +
-                "\" +\n" +
-                "                    \"    \\\"resultcode\\\": \\\"200\\\",\\n\" +\n" +
-                "                    \"    \\\"reason\\\": \\\"SUCCESSED!\\\",\\n\" +\n" +
-                "                    \"    \\\"result\\\": [\\n\" +\n" +
-                "                    \"        {\\n\" +\n" +
-                "                    \"            \\\"city\\\": \\\"苏州\\\",\\n\" +\n" +
-                "                    \"            \\\"PM2.5\\\": \\\"73\\\",\\n\" +\n" +
-                "                    \"            \\\"AQI\\\": \\\"98\\\",\\n\" +\n" +
-                "                    \"            \\\"quality\\\": \\\"良\\\",\\n\" +\n" +
-                "                    \"            \\\"PM10\\\": \\\"50\\\",\\n\" +\n" +
-                "                    \"            \\\"CO\\\": \\\"0.79\\\",\\n\" +\n" +
-                "                    \"            \\\"NO2\\\": \\\"65\\\",\\n\" +\n" +
-                "                    \"            \\\"O3\\\": \\\"28\\\",\\n\" +\n" +
-                "                    \"            \\\"SO2\\\": \\\"41\\\",\\n\" +\n" +
-                "                    \"            \\\"time\\\": \\\"2014-12-26 11:48:40\\\"\\n\" +\n" +
-                "                    \"        }\\n\" +\n" +
-                "                    \"    ],\\n\" +\n" +
-                "                    \"    \\\"error_code\\\": 0\\n\" +\n" +
-                "                    \"}";
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            JSONArray result = jsonObject.getJSONArray("result");
-            PM pm = gson.fromJson(result.getString(0), PM.class);
-            L.i(TAG, "AQI:" + pm.getAQI());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     private void initViews() {
         tv_city = (TextView) findViewById(R.id.tv_city);
@@ -172,10 +151,15 @@ public class MainActivity extends Activity {
         tv_seventhday = (TextView) findViewById(R.id.tv_seventhday);
         tv_seventhday_temp = (TextView) findViewById(R.id.tv_seventhday_temp);
 
-        tv_humidity = (TextView) findViewById(R.id.tv_humidity);
         tv_wind = (TextView) findViewById(R.id.tv_wind);
-        tv_uv_index = (TextView) findViewById(R.id.tv_uv_index);
         tv_dressing_index = (TextView) findViewById(R.id.tv_dressing_index);
+        tv_dressing_advice = (TextView) findViewById(R.id.tv_dressing_advice);
+        tv_uv_index = (TextView) findViewById(R.id.tv_uv_index);
+        tv_comfort_index = (TextView) findViewById(R.id.tv_comfort_index);
+        tv_wash_index = (TextView) findViewById(R.id.tv_wash_index);
+        tv_travel_index = (TextView) findViewById(R.id.tv_travel_index);
+        tv_exercise_index = (TextView) findViewById(R.id.tv_exercise_index);
+        tv_drying_index = (TextView) findViewById(R.id.tv_drying_index);
 
         iv_now_weather_a = (ImageView) findViewById(R.id.iv_now_weather_a);
         iv_now_weather_divider = findViewById(R.id.iv_now_weather_divider);
@@ -189,6 +173,9 @@ public class MainActivity extends Activity {
         iv_tommorrow_weather = (ImageView) findViewById(R.id.iv_tommorrow_weather);
         iv_thirdday_weather = (ImageView) findViewById(R.id.iv_thirdday_weather);
         iv_fourthday_weather = (ImageView) findViewById(R.id.iv_fourthday_weather);
+        iv_fifthday_weather = (ImageView) findViewById(R.id.iv_fifthday_weather);
+        iv_sixthday_weather = (ImageView) findViewById(R.id.iv_sixthday_weather);
+        iv_seventhday_weather = (ImageView) findViewById(R.id.iv_seventhday_weather);
 
         rl_city = (RelativeLayout) findViewById(R.id.rl_city);
         rl_city.setOnClickListener(new View.OnClickListener() {
@@ -207,6 +194,7 @@ public class MainActivity extends Activity {
                     public void run() {
                         refreshLayout.finishRefreshing();
                         weatherService.getWeather();
+                        weatherService.getForecast();
                     }
                 });
             }
@@ -216,14 +204,47 @@ public class MainActivity extends Activity {
     OnWeatherCallback weatherCallback = new OnWeatherCallback() {
         @Override
         public void onWeatherUpdated(WeatherBean weather) {
+            Calendar c = Calendar.getInstance();
+            int time = c.get(Calendar.HOUR_OF_DAY);
+            prefixStr = null;
+            if (time >= 6 && time < 18) {
+                prefixStr = "d";
+            } else {
+                prefixStr = "n";
+            }
             updateSK(weather.getSk());
             updateToday(weather.getToday());
             updateFuture(weather.getFutures());
         }
 
         @Override
+        public void onForecastUpdated(Forecast[] forecasts) {
+            //设置时间显示
+            tv_next_three.setText(forecasts[0].getSh() + "点");
+            tv_next_six.setText(forecasts[1].getSh() + "点");
+            tv_next_nine.setText(forecasts[2].getSh() + "点");
+            tv_next_twelve.setText(forecasts[3].getSh() + "点");
+            tv_next_fifteen.setText(forecasts[4].getSh() + "点");
+
+            //设置温度显示
+            tv_next_three_temp.setText(forecasts[0].getTemp1() + "℃~" + forecasts[0].getTemp2() + "℃");
+            tv_next_six_temp.setText(forecasts[1].getTemp1() + "℃~" + forecasts[1].getTemp2() + "℃");
+            tv_next_nine_temp.setText(forecasts[2].getTemp1() + "℃~" + forecasts[2].getTemp2() + "℃");
+            tv_next_twelve_temp.setText(forecasts[3].getTemp1() + "℃~" + forecasts[3].getTemp2() + "℃");
+            tv_next_fifteen_temp.setText(forecasts[4].getTemp1() + "℃~" + forecasts[4].getTemp2() + "℃");
+
+            //设置图标
+            iv_next_three.setImageResource(getResources().getIdentifier(prefixStr + forecasts[0].getWeatherid(), "drawable", "cn.qiyanghong.pocketweather"));
+            iv_next_six.setImageResource(getResources().getIdentifier(prefixStr + forecasts[1].getWeatherid(), "drawable", "cn.qiyanghong.pocketweather"));
+            iv_next_nine.setImageResource(getResources().getIdentifier(prefixStr + forecasts[2].getWeatherid(), "drawable", "cn.qiyanghong.pocketweather"));
+            iv_next_twelve.setImageResource(getResources().getIdentifier(prefixStr + forecasts[3].getWeatherid(), "drawable", "cn.qiyanghong.pocketweather"));
+            iv_next_fifteen.setImageResource(getResources().getIdentifier(prefixStr + forecasts[4].getWeatherid(), "drawable", "cn.qiyanghong.pocketweather"));
+        }
+
+        @Override
         public void onPMUpdated(PM pm) {
-            updatePM(pm);
+            tv_aqi.setText(pm.getAQI());
+            tv_quality.setText(pm.getQuality());
         }
     };
 
@@ -234,19 +255,11 @@ public class MainActivity extends Activity {
 
     private void updateToday(Today today) {
         tv_city.setText(today.getCity());
-
-        Calendar c = Calendar.getInstance();
-        int time = c.get(Calendar.HOUR_OF_DAY);
-        String prefixStr = null;
-        if (time >= 6 && time < 18) {
-            prefixStr = "d";
-        } else {
-            prefixStr = "n";
-        }
+        
         tv_now_weather.setText(today.getWeather());
 
         Weather_Id weather_id = today.getWeather_id();
-        int visibility = View.VISIBLE;
+        int visibility;
         if (weather_id.isSingle()) {
             visibility = View.GONE;
         } else {
@@ -260,29 +273,45 @@ public class MainActivity extends Activity {
 
         // 温度 8℃~16℃" ↑ ↓ °
         tv_today_temprature.setText(today.getTemperature());
+
+        //详细信息
+        tv_wind.setText(today.getWind());
+        tv_dressing_index.setText(today.getDressing_index());
+        tv_dressing_advice.setText(today.getDressing_advice());
+        tv_uv_index.setText(today.getUv_index());
+        tv_comfort_index.setText(today.getComfort_index());
+        tv_wash_index.setText(today.getWash_index());
+        tv_travel_index.setText(today.getTravel_index());
+        tv_exercise_index.setText(today.getExercise_index());
+        tv_drying_index.setText(today.getDrying_index());
     }
 
     private void updateFuture(Future[] futures) {
-        tv_today_temp.setText (futures[0].getTemperature());
-        tv_tommorrow_temp.setText (futures[1].getTemperature());
-        tv_thirdday_temp.setText (futures[2].getTemperature());
-        tv_fourthday_temp.setText (futures[3].getTemperature());
-        tv_fifthday_temp.setText (futures[4].getTemperature());
-        tv_sixthday_temp.setText (futures[5].getTemperature());
-        tv_seventhday_temp.setText (futures[6].getTemperature());
+        tv_today_temp.setText(futures[0].getTemperature());
+        tv_tommorrow_temp.setText(futures[1].getTemperature());
+        tv_thirdday_temp.setText(futures[2].getTemperature());
+        tv_fourthday_temp.setText(futures[3].getTemperature());
+        tv_fifthday_temp.setText(futures[4].getTemperature());
+        tv_sixthday_temp.setText(futures[5].getTemperature());
+        tv_seventhday_temp.setText(futures[6].getTemperature());
 
-        tv_tommorrow.setText (futures[1].getWeek());
-        tv_thirdday.setText (futures[2].getWeek());
-        tv_fourthday.setText (futures[3].getWeek());
-        tv_fifthday.setText (futures[4].getWeek());
-        tv_sixthday.setText (futures[5].getWeek());
-        tv_seventhday.setText (futures[6].getWeek());
-        //L.i(TAG,futures[6].getWeek());
+        tv_tommorrow.setText(futures[1].getWeek());
+        tv_thirdday.setText(futures[2].getWeek());
+        tv_fourthday.setText(futures[3].getWeek());
+        tv_fifthday.setText(futures[4].getWeek());
+        tv_sixthday.setText(futures[5].getWeek());
+        tv_seventhday.setText(futures[6].getWeek());
+
+        String preFix = "d";
+        iv_today_weather.setImageResource(getResources().getIdentifier(preFix + futures[0].getWeather_id().getFa(), "drawable", "cn.qiyanghong.pocketweather"));
+        iv_tommorrow_weather.setImageResource(getResources().getIdentifier(preFix + futures[1].getWeather_id().getFa(), "drawable", "cn.qiyanghong.pocketweather"));
+        iv_thirdday_weather.setImageResource(getResources().getIdentifier(preFix + futures[2].getWeather_id().getFa(), "drawable", "cn.qiyanghong.pocketweather"));
+        iv_fourthday_weather.setImageResource(getResources().getIdentifier(preFix + futures[3].getWeather_id().getFa(), "drawable", "cn.qiyanghong.pocketweather"));
+        iv_fifthday_weather.setImageResource(getResources().getIdentifier(preFix + futures[4].getWeather_id().getFa(), "drawable", "cn.qiyanghong.pocketweather"));
+        iv_sixthday_weather.setImageResource(getResources().getIdentifier(preFix + futures[5].getWeather_id().getFa(), "drawable", "cn.qiyanghong.pocketweather"));
+        iv_seventhday_weather.setImageResource(getResources().getIdentifier(preFix + futures[6].getWeather_id().getFa(), "drawable", "cn.qiyanghong.pocketweather"));
     }
 
-    private void updatePM(PM pm) {
-
-    }
 
     @Override
     protected void onDestroy() {
@@ -297,6 +326,8 @@ public class MainActivity extends Activity {
 
     interface OnWeatherCallback {
         void onWeatherUpdated(WeatherBean weather);
+
+        void onForecastUpdated(Forecast[] forecasts);
 
         void onPMUpdated(PM pm);
     }

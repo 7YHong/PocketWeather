@@ -34,7 +34,7 @@
             android:background="@color/light_grey" />
     </RelativeLayout>
 
-    <ListView
+    <ExpandableListView
         android:id="@+id/lv_city"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

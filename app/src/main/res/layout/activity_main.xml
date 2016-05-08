@@ -488,58 +488,58 @@
                         style="@style/TextViewStyle"
                         android:gravity="left"
                         android:paddingLeft="16dp"
-                        android:text="@string/felt_air_temp" />
-
-                    <TextView
-                        android:id="@+id/tv_felt_air_temp"
-                        style="@style/TextViewStyle"
-                        android:gravity="left"
-                        android:paddingLeft="16dp" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/light_grey" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp">
-
-                    <TextView
-                        style="@style/TextViewStyle"
-                        android:gravity="left"
-                        android:paddingLeft="16dp"
-                        android:text="@string/humidity" />
-
-                    <TextView
-                        android:id="@+id/tv_humidity"
-                        style="@style/TextViewStyle"
-                        android:gravity="left"
-                        android:paddingLeft="16dp" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/light_grey" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp">
-
-                    <TextView
-                        style="@style/TextViewStyle"
-                        android:gravity="left"
-                        android:paddingLeft="16dp"
                         android:text="@string/wind" />
 
                     <TextView
                         android:id="@+id/tv_wind"
+                        style="@style/TextViewStyle"
+                        android:gravity="left"
+                        android:paddingLeft="16dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/light_grey" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:gravity="left"
+                        android:paddingLeft="16dp"
+                        android:text="@string/dressing_index" />
+
+                    <TextView
+                        android:id="@+id/tv_dressing_index"
+                        style="@style/TextViewStyle"
+                        android:gravity="left"
+                        android:paddingLeft="16dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/light_grey" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:gravity="left"
+                        android:paddingLeft="16dp"
+                        android:text="@string/dressing_advice" />
+
+                    <TextView
+                        android:id="@+id/tv_dressing_advice"
                         style="@style/TextViewStyle"
                         android:gravity="left"
                         android:paddingLeft="16dp" />
@@ -584,14 +584,112 @@
                         style="@style/TextViewStyle"
                         android:gravity="left"
                         android:paddingLeft="16dp"
-                        android:text="@string/dressing_index" />
+                        android:text="@string/comfort_index" />
 
                     <TextView
-                        android:id="@+id/tv_dressing_index"
+                        android:id="@+id/tv_comfort_index"
                         style="@style/TextViewStyle"
                         android:gravity="left"
                         android:paddingLeft="16dp" />
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/light_grey" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:gravity="left"
+                        android:paddingLeft="16dp"
+                        android:text="@string/wash_index" />
+
+                    <TextView
+                        android:id="@+id/tv_wash_index"
+                        style="@style/TextViewStyle"
+                        android:gravity="left"
+                        android:paddingLeft="16dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/light_grey" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:gravity="left"
+                        android:paddingLeft="16dp"
+                        android:text="@string/travel_index" />
+
+                    <TextView
+                        android:id="@+id/tv_travel_index"
+                        style="@style/TextViewStyle"
+                        android:gravity="left"
+                        android:paddingLeft="16dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/light_grey" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:gravity="left"
+                        android:paddingLeft="16dp"
+                        android:text="@string/exercise_index" />
+
+                    <TextView
+                        android:id="@+id/tv_exercise_index"
+                        style="@style/TextViewStyle"
+                        android:gravity="left"
+                        android:paddingLeft="16dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/light_grey" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp">
+
+                    <TextView
+                        style="@style/TextViewStyle"
+                        android:gravity="left"
+                        android:paddingLeft="16dp"
+                        android:text="@string/drying_index" />
+
+                    <TextView
+                        android:id="@+id/tv_drying_index"
+                        style="@style/TextViewStyle"
+                        android:gravity="left"
+                        android:paddingLeft="16dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/light_grey" />
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
