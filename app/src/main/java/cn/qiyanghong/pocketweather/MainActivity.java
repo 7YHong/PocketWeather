@@ -2,20 +2,18 @@ package cn.qiyanghong.pocketweather;
 
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cjj.refresh.BeautifulRefreshLayout;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.Calendar;
 
@@ -24,7 +22,7 @@ import cn.qiyanghong.pocketweather.entity.*;
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getName();
-    private static final int RESULT_CITY = 1;
+    private static final int REQUEST_CITY = 1;
     BeautifulRefreshLayout refreshLayout;
     WeatherService weatherService;
 
@@ -95,13 +93,12 @@ public class MainActivity extends Activity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             weatherService = ((WeatherService.WeatherServiceBinder) service).getService();
             weatherService.registerCallback(weatherCallback);
-            weatherService.getWeather();
-            weatherService.getForecast();
-            weatherService.getPM();
+            weatherService.refreshWeather();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            weatherService.unregisterCallback(weatherCallback);
         }
     };
 
@@ -155,11 +152,11 @@ public class MainActivity extends Activity {
         tv_dressing_index = (TextView) findViewById(R.id.tv_dressing_index);
         tv_dressing_advice = (TextView) findViewById(R.id.tv_dressing_advice);
         tv_uv_index = (TextView) findViewById(R.id.tv_uv_index);
-        tv_comfort_index = (TextView) findViewById(R.id.tv_comfort_index);
+//        tv_comfort_index = (TextView) findViewById(R.id.tv_comfort_index);
         tv_wash_index = (TextView) findViewById(R.id.tv_wash_index);
         tv_travel_index = (TextView) findViewById(R.id.tv_travel_index);
         tv_exercise_index = (TextView) findViewById(R.id.tv_exercise_index);
-        tv_drying_index = (TextView) findViewById(R.id.tv_drying_index);
+//        tv_drying_index = (TextView) findViewById(R.id.tv_drying_index);
 
         iv_now_weather_a = (ImageView) findViewById(R.id.iv_now_weather_a);
         iv_now_weather_divider = findViewById(R.id.iv_now_weather_divider);
@@ -181,7 +178,7 @@ public class MainActivity extends Activity {
         rl_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(getApplicationContext(), CityActivity.class), RESULT_CITY);
+                startActivity(new Intent(getApplicationContext(), CityActivity.class));
             }
         });
 
@@ -193,8 +190,7 @@ public class MainActivity extends Activity {
                     @Override
                     public void run() {
                         refreshLayout.finishRefreshing();
-                        weatherService.getWeather();
-                        weatherService.getForecast();
+                        weatherService.refreshWeather();
                     }
                 });
             }
@@ -202,6 +198,18 @@ public class MainActivity extends Activity {
     }
 
     OnWeatherCallback weatherCallback = new OnWeatherCallback() {
+        @Override
+        public void needRefreshCity() {
+            new AlertDialog.Builder(MainActivity.this).setTitle("去选择你所在的城市")
+                    .setPositiveButton("好", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            startActivityForResult(new Intent(getApplicationContext(), CityActivity.class), REQUEST_CITY);
+                        }
+                    })
+                    .show();
+        }
+
         @Override
         public void onWeatherUpdated(WeatherBean weather) {
             Calendar c = Calendar.getInstance();
@@ -255,7 +263,7 @@ public class MainActivity extends Activity {
 
     private void updateToday(Today today) {
         tv_city.setText(today.getCity());
-        
+
         tv_now_weather.setText(today.getWeather());
 
         Weather_Id weather_id = today.getWeather_id();
@@ -279,11 +287,11 @@ public class MainActivity extends Activity {
         tv_dressing_index.setText(today.getDressing_index());
         tv_dressing_advice.setText(today.getDressing_advice());
         tv_uv_index.setText(today.getUv_index());
-        tv_comfort_index.setText(today.getComfort_index());
+//        tv_comfort_index.setText(today.getComfort_index());
         tv_wash_index.setText(today.getWash_index());
         tv_travel_index.setText(today.getTravel_index());
         tv_exercise_index.setText(today.getExercise_index());
-        tv_drying_index.setText(today.getDrying_index());
+//        tv_drying_index.setText(today.getDrying_index());
     }
 
     private void updateFuture(Future[] futures) {
@@ -322,9 +330,14 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CITY && resultCode == RESULT_OK) {
+            weatherService.refreshWeather();
+        }
     }
 
     interface OnWeatherCallback {
+        void needRefreshCity();
+
         void onWeatherUpdated(WeatherBean weather);
 
         void onForecastUpdated(Forecast[] forecasts);

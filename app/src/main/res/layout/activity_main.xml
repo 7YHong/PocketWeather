@@ -53,6 +53,8 @@
                 android:layout_height="1px"
                 android:background="@color/light_grey" />
 
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -85,6 +87,14 @@
                     android:layout_marginLeft="4dp"
                     android:text="@string/default_text"
                     android:textColor="@color/text_color" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textColor="@color/text_color"
+                    android:textSize="12sp"
+                    android:text="作者：戚杨红"/>
             </LinearLayout>
 
             <TextView
@@ -574,24 +584,24 @@
                     android:layout_height="1px"
                     android:background="@color/light_grey" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp">
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginBottom="8dp"-->
+                    <!--android:layout_marginTop="8dp">-->
 
-                    <TextView
-                        style="@style/TextViewStyle"
-                        android:gravity="left"
-                        android:paddingLeft="16dp"
-                        android:text="@string/comfort_index" />
+                    <!--<TextView-->
+                        <!--style="@style/TextViewStyle"-->
+                        <!--android:gravity="left"-->
+                        <!--android:paddingLeft="16dp"-->
+                        <!--android:text="@string/comfort_index" />-->
 
-                    <TextView
-                        android:id="@+id/tv_comfort_index"
-                        style="@style/TextViewStyle"
-                        android:gravity="left"
-                        android:paddingLeft="16dp" />
-                </LinearLayout>
+                    <!--<TextView-->
+                        <!--android:id="@+id/tv_comfort_index"-->
+                        <!--style="@style/TextViewStyle"-->
+                        <!--android:gravity="left"-->
+                        <!--android:paddingLeft="16dp" />-->
+                <!--</LinearLayout>-->
 
                 <View
                     android:layout_width="match_parent"
@@ -666,24 +676,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:background="@color/light_grey" />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp">
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginBottom="8dp"-->
+                    <!--android:layout_marginTop="8dp">-->
 
-                    <TextView
-                        style="@style/TextViewStyle"
-                        android:gravity="left"
-                        android:paddingLeft="16dp"
-                        android:text="@string/drying_index" />
+                    <!--<TextView-->
+                        <!--style="@style/TextViewStyle"-->
+                        <!--android:gravity="left"-->
+                        <!--android:paddingLeft="16dp"-->
+                        <!--android:text="@string/drying_index" />-->
 
-                    <TextView
-                        android:id="@+id/tv_drying_index"
-                        style="@style/TextViewStyle"
-                        android:gravity="left"
-                        android:paddingLeft="16dp" />
-                </LinearLayout>
+                    <!--<TextView-->
+                        <!--android:id="@+id/tv_drying_index"-->
+                        <!--style="@style/TextViewStyle"-->
+                        <!--android:gravity="left"-->
+                        <!--android:paddingLeft="16dp" />-->
+                <!--</LinearLayout>-->
 
                 <View
                     android:layout_width="match_parent"
