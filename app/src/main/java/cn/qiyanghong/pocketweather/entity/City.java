@@ -48,4 +48,9 @@ public class City {
     public void setDistrict(String district) {
         this.district = district;
     }
+
+    @Override
+    public String toString(){
+        return city+"\t"+district;
+    }
 }
