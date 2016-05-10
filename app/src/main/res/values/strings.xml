@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PocketWeather</string>
+    <string name="app_name">口袋天气</string>
 
     <string name="today">今天</string>
     <string name="pm">PM2.5</string>
