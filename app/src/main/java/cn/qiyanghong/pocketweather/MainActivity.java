@@ -23,11 +23,13 @@ import cn.qiyanghong.pocketweather.entity.*;
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getName();
     private static final int REQUEST_CITY = 1;
-    BeautifulRefreshLayout refreshLayout;
-    WeatherService weatherService;
+    private BeautifulRefreshLayout refreshLayout;
+    private WeatherService weatherService;
 
 
-    String prefixStr = null;
+    private String prefixStr = null;
+
+    private AlertDialog chooseCity;
 
     private TextView tv_city,// 城市
             tv_release,// 发布时间
@@ -106,6 +108,13 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        chooseCity= new AlertDialog.Builder(MainActivity.this).setTitle("去选择你所在的城市")
+                .setPositiveButton("好", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivityForResult(new Intent(getApplicationContext(), CityActivity.class), REQUEST_CITY);
+                    }
+                }).create();
         initViews();
         Intent serviceIntent = new Intent(getApplicationContext(), WeatherService.class);
         bindService(serviceIntent, conn, BIND_AUTO_CREATE);
@@ -178,7 +187,8 @@ public class MainActivity extends Activity {
         rl_city.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), CityActivity.class));
+                startActivityForResult(new Intent(getApplicationContext(), CityActivity.class)
+                ,REQUEST_CITY);
             }
         });
 
@@ -200,14 +210,9 @@ public class MainActivity extends Activity {
     OnWeatherCallback weatherCallback = new OnWeatherCallback() {
         @Override
         public void needRefreshCity() {
-            new AlertDialog.Builder(MainActivity.this).setTitle("去选择你所在的城市")
-                    .setPositiveButton("好", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            startActivityForResult(new Intent(getApplicationContext(), CityActivity.class), REQUEST_CITY);
-                        }
-                    })
-                    .show();
+            if (!chooseCity.isShowing()){
+                chooseCity.show();
+            }
         }
 
         @Override

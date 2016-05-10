@@ -77,6 +77,20 @@ public class WeatherService extends Service {
     }
 
     public void refreshWeather() {
+        if (SPUtils.contains(getApplicationContext(), "cityname")) {
+            CITY_NAME = (String) SPUtils.get(getApplicationContext(), "cityname", "");
+            CITY_ID = (int) SPUtils.get(getApplicationContext(), "cityid", 0);
+            isNeedRefreshCity = false;
+            L.i(TAG, "->requestDataFromCloud\tcityname:" + CITY_NAME);
+            L.i(TAG, "->requestDataFromCloud\tcityid:" + CITY_ID);
+        }
+
+        if (isNeedRefreshCity) {
+            L.i(TAG, "->requestDataFromCloud\tisNeedRefreshCity:" + isNeedRefreshCity);
+            weatherCallback.needRefreshCity();
+            return;
+        }
+
         requestDataFromCloud(REQ_TYPE_WEATHER);
         requestDataFromCloud(REQ_TYPE_FORECAST);
         requestDataFromCloud(REQ_TYPE_PM);
@@ -126,8 +140,8 @@ public class WeatherService extends Service {
             cities.add(city);
             L.i(TAG, "descript:" + city.get(0).toString());
         }
-
-        cityCallback.onCityUpdate(provinces, cities);
+        if (cityCallback != null)
+            cityCallback.onCityUpdate(provinces, cities);
     }
 
     private void parseCitys(String response) {
@@ -195,21 +209,21 @@ public class WeatherService extends Service {
 
     private void requestDataFromCloud(int req_type) {
 
-        if (SPUtils.contains(getApplicationContext(), "cityname")) {
-            CITY_NAME = (String) SPUtils.get(getApplicationContext(), "cityname", "");
-            CITY_ID = (int) SPUtils.get(getApplicationContext(), "cityid", 0);
-            isNeedRefreshCity = false;
-            L.i(TAG,"->requestDataFromCloud\tcityname:"+CITY_NAME);
-            L.i(TAG,"->requestDataFromCloud\tcityid:"+CITY_ID);
-        }
-
-        if (req_type != REQ_TYPE_CITY) {
-            if (isNeedRefreshCity) {
-                L.i(TAG, "->requestDataFromCloud\tisNeedRefreshCity:" + isNeedRefreshCity);
-                weatherCallback.needRefreshCity();
-                return;
-            }
-        }
+//        if (SPUtils.contains(getApplicationContext(), "cityname")) {
+//            CITY_NAME = (String) SPUtils.get(getApplicationContext(), "cityname", "");
+//            CITY_ID = (int) SPUtils.get(getApplicationContext(), "cityid", 0);
+//            isNeedRefreshCity = false;
+//            L.i(TAG,"->requestDataFromCloud\tcityname:"+CITY_NAME);
+//            L.i(TAG,"->requestDataFromCloud\tcityid:"+CITY_ID);
+//        }
+//
+//        if (req_type != REQ_TYPE_CITY) {
+//            if (isNeedRefreshCity) {
+//                L.i(TAG, "->requestDataFromCloud\tisNeedRefreshCity:" + isNeedRefreshCity);
+//                weatherCallback.needRefreshCity();
+//                return;
+//            }
+//        }
 
         Parameters params = new Parameters();
         String url = "";

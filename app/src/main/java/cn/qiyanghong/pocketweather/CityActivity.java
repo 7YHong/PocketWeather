@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.List;
@@ -28,12 +27,22 @@ public class CityActivity extends AppCompatActivity {
     private ExpandableListView listView;
     private ImageButton btn_search
             ,btn_refersh;
-    private ProgressBar progressbar;
 
     private boolean isNeedRefresh=true;
-    private boolean refreshing=false;
 
     private WeatherService weatherService;
+
+    /**
+     * 在以下几个地方显示：
+     * onCreate
+     * refresh_btn->click
+     * searchDialog->click
+     *
+     * 在以下几个地方消失:
+     * onCityUpdated
+     * onSearchDone
+     */
+    private AlertDialog waitingDialog;
 
     private ServiceConnection conn=new ServiceConnection() {
         @Override
@@ -62,15 +71,14 @@ public class CityActivity extends AppCompatActivity {
         @Override
         public void onCityUpdate(String[] province, List<List<City>> cities) {
             showCityList(province, cities);
-            progressbar.setVisibility(View.GONE);
-            refreshing=false;
+            dismissWaitingDialog();
         }
 
         @Override
         public void onSearchDone(List<City> searchResult) {
+            dismissWaitingDialog();
             showChooseCityDialog(searchResult);
-            progressbar.setVisibility(View.GONE);
-            refreshing=false;
+            L.i(TAG,"->onSearchDone");
         }
     };
 
@@ -82,13 +90,13 @@ public class CityActivity extends AppCompatActivity {
 
         isNeedRefresh=!SPUtils.contains(getApplicationContext(),"cityname");
 
-        progressbar= (ProgressBar) findViewById(R.id.progressbar);
+//        progressbar= (ProgressBar) findViewById(R.id.progressbar);
         listView = (ExpandableListView) findViewById(R.id.lv_city);
         btn_search = (ImageButton) findViewById(R.id.btn_search);
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (refreshing) return;
+                if (waitingDialog.isShowing())return;
                 showSearchCityDialog();
             }
         });
@@ -97,20 +105,29 @@ public class CityActivity extends AppCompatActivity {
         btn_refersh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (refreshing) return;
+                if (waitingDialog.isShowing())return;
+                showWaitingDialog();
                 weatherService.refreshCity();
-                progressbar.setVisibility(View.VISIBLE);
-                refreshing=true;
             }
         });
-
+        waitingDialog=new AlertDialog.Builder(CityActivity.this)
+                .setView(R.layout.progressbar_dialog)
+                .create();
+        waitingDialog.setCanceledOnTouchOutside(false);
+        showWaitingDialog();
 
         Intent serviceIntent = new Intent(getApplicationContext(), WeatherService.class);
         bindService(serviceIntent, conn, BIND_AUTO_CREATE);
     }
 
-    private void showProgressDialog() {
+    private void showWaitingDialog() {
+        if (!waitingDialog.isShowing())
+            waitingDialog.show();
+    }
 
+    private void dismissWaitingDialog() {
+        if (waitingDialog.isShowing())
+            waitingDialog.dismiss();
     }
 
     @Override
@@ -130,8 +147,9 @@ public class CityActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         String cityname = input.getText().toString();
                         L.i(TAG, "cityname:" + cityname);
+                        showWaitingDialog();
                         weatherService.searchCity(cityname);
-                        progressbar.setVisibility(View.VISIBLE);
+                        L.i(TAG,"->showSearchCityDialog\t搜索城市");
                     }
                 }).show();
     }
@@ -154,8 +172,8 @@ public class CityActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         L.i(TAG, "Selected:" + which);
-                        setResultAndFinish(result.get(which).getId(),result.get(which).getCity());
                         dialog.dismiss();
+                        setResultAndFinish(result.get(which).getId(),result.get(which).getCity());
                     }
                 }).show();
     }
@@ -198,14 +216,14 @@ public class CityActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if (refreshing){
-            refreshing=false;
-            progressbar.setVisibility(View.GONE);
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (waitingDialog.isShowing()){
+//            dismissWaitingDialog();
+//            return;
+//        }
+//        super.onBackPressed();
+//    }
 
     interface OnCityCallback {
         void onCityUpdate(String[] province, List<List<City>> cities);

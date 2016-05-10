@@ -52,7 +52,7 @@ public class LaunchActivity extends Activity {
         if (requestCode == 0) {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED
                     ||grantResults[1] != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getApplicationContext(), "Permission Denied!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "请赐予我相关权限T_T", Toast.LENGTH_LONG).show();
                 finish();
             }else
                 checkAndLaunch();
